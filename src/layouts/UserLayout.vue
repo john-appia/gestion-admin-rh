@@ -21,12 +21,12 @@
                   userStore.userAuthenticate.username
                 }}</q-item-section>
               </q-item>
-              <q-separator />
+              <q-separator spaced />
               <q-item clickable v-close-popup>
                 <q-item-section>Mon profile</q-item-section>
               </q-item>
               <q-item clickable v-close-popup @click="userStore.logout()">
-                <q-item-section>Deconnexion</q-item-section>
+                <q-item-section>Déconnexion</q-item-section>
               </q-item>
             </q-list>
           </q-menu>

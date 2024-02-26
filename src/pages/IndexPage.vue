@@ -1,49 +1,69 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <p class="tw-text-6xl tw-text-purple-700">hello world</p>
+  <q-page padding>
+    <section class="row wrap q-col-gutter-lg">
+      <q-card class="my-card" flat>
+        <q-card-section class="bg-brand-light text-dark">
+          <div class="text-h4">{{ StaffLength }}</div>
+          <div class="text-subtitle1">Collaborateurs</div>
+        </q-card-section>
+      </q-card>
+      <q-card class="my-card" flat>
+        <q-card-section class="bg-brand-light text-dark">
+          <div class="text-h4">{{ requestsLength }}</div>
+          <div class="text-subtitle1">
+            {{ requestsLength > 1 ? 'Demandes' : 'Demande' }}
+          </div>
+        </q-card-section>
+      </q-card>
+    </section>
+    <section class="row q-mt-xl q-col-gutter-lg">
+      <article class="col-12 col-sm-6 col-md-4">
+        <div class="bg-grey-11 q-pa-md">
+          <p class="text-subtitle1 text-bold">Collaborateurs</p>
+          <gender-chart></gender-chart>
+        </div>
+      </article>
+      <article class="col-12 col-sm-6 col-md-4">
+        <div class="bg-grey-11 q-pa-md">
+          <p class="text-subtitle1 text-bold">Détails des demandes</p>
+          <requests-chart></requests-chart>
+        </div>
+      </article>
+    </section>
   </q-page>
 </template>
 
 <script lang="ts">
-import { Todo, Meta } from 'components/models';
-import { defineComponent, ref } from 'vue';
+import GenderChart from 'src/components/GenderChart.vue';
+import RequestsChart from 'src/components/RequestsChart.vue';
+import { useRequestStore } from 'src/stores/administrative-requests';
+import { useStaffManagementStore } from 'src/stores/staff-management';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'IndexPage',
-  components: {},
+  components: { GenderChart, RequestsChart },
   setup() {
-    const todos = ref<Todo[]>([
-      {
-        id: 1,
-        content: 'ct1',
-      },
-      {
-        id: 2,
-        content: 'ct2',
-      },
-      {
-        id: 3,
-        content: 'ct3',
-      },
-      {
-        id: 4,
-        content: 'ct4',
-      },
-      {
-        id: 5,
-        content: 'ct5',
-      },
-    ]);
-    const meta = ref<Meta>({
-      totalCount: 1200,
+    const staffStore = useStaffManagementStore();
+    const requestStore = useRequestStore();
+
+    const StaffLength = computed(() => {
+      return staffStore.staff.length;
     });
-    return { todos, meta };
+
+    const requestsLength = computed(() => {
+      return requestStore.requests.length;
+    });
+
+    return { StaffLength, requestsLength };
   },
 });
 </script>
 
 <style>
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+.my-card {
+  width: 100%;
+  max-width: 250px;
+  border-radius: 14px;
+}
 </style>
